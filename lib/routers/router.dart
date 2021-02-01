@@ -5,20 +5,22 @@ import '../pages/home.dart';
 import '../pages/message.dart';
 import '../pages/category.dart';
 import '../pages/person.dart';
+import '../pages/version.dart';
 
 //配置路由
 final routers = {
   '/': (context) => StartupPage(),
-  // '/login': (context) => LoginPage(),
   '/home': (context) => HomePage(),
   '/category': (context) => CategoryPage(),
   '/message': (context, {arguments}) => MessagePage(),
   '/person': (context, {arguments}) => PersonPage(),
+  '/version': (context) => VersionPage(),
 };
 //固定写法
 var onGenerateRoute = (RouteSettings settings) {
   //统一处理
   final String name = settings.name;
+  print('路由条目${routers}');
   final Function pageContentBuilder = routers[name];
   if (pageContentBuilder != null) {
     if (settings.arguments != null) {

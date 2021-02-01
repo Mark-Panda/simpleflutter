@@ -34,6 +34,7 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: false, //去掉返回按钮
         title: Text(
           "sqflite数据存储",
           style: TextStyle(color: Colors.white),

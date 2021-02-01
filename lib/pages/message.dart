@@ -17,8 +17,8 @@ class _MessagePageState extends State<MessagePage> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Color color = Color.fromRGBO(255, 127, 102, 1.0);
-
+    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
+    Color color = Theme.of(context).primaryColor;
     Widget buttonSection = Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -30,11 +30,10 @@ class _MessagePageState extends State<MessagePage> {
       ),
     );
 
-    return MaterialApp(
-      title: '大标题',
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: Text('资讯标题'),
+          automaticallyImplyLeading: false, //去掉返回按钮
           backgroundColor: color,
         ),
         body: Column(
@@ -50,7 +49,6 @@ class _MessagePageState extends State<MessagePage> {
             textSection,
             ],
           ),
-      ),
       );
     }
 

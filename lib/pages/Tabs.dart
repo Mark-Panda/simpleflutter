@@ -29,10 +29,9 @@ class _TabsPageState extends State<TabsPage> {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
+    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
     print('Tabs 主题色${color}');
-    return MaterialApp(
-      // title: '大标题',
-      home: Scaffold(
+    return Scaffold(
         body: this._pageList[this._currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: this._currentIndex,
@@ -47,23 +46,22 @@ class _TabsPageState extends State<TabsPage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              title: Text("首页")
+              title: Text("首页"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.category),
-              title: Text("分类")
+              title: Text("分类"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.message),
-              title: Text("资讯")
+              title: Text("资讯"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text("我的")
+              title: Text("我的"),
             ),
           ],
         ),
-      ),
       );
     }
 

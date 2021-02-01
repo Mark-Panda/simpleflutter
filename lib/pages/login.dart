@@ -111,9 +111,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color color = Color.fromRGBO(255, 127, 102, 1.0);
-    // Color color = Theme.of(context).primaryColor;
-    print(color);
+    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
+    Color color = Theme.of(context).primaryColor;
+    print('登录的主题颜色${color}');
     return Scaffold(
       appBar: AppBar(
         title: Text("注册或登录"),
