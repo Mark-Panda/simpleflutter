@@ -13,6 +13,7 @@ class StartupPage extends StatefulWidget {
 
 class _StartupPageState extends State<StartupPage> {
   Timer timer;
+  num index = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,8 +31,12 @@ class _StartupPageState extends State<StartupPage> {
   handleTimeout() {
     Navigator.pushAndRemoveUntil(
       context,
-      // MaterialPageRoute(builder: (context) => TabsPage()),
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => TabsPage(arguments: {
+              "index": index
+            }
+          )
+      ),
+      // MaterialPageRoute(builder: (context) => LoginPage()),
       (route) => route == null,
     );
   }

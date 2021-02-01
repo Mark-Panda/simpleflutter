@@ -30,6 +30,7 @@ dependencies:
   sqflite: ^1.3.0        #sqlite数据库
   fluttertoast: ^7.1.6   #消息框
   shared_preferences: ^0.5.4+1  #本地存储
+  flutter_slidable: ^0.5.4  #卡片侧滑删除动画
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,6 +55,7 @@ flutter:
   assets:
     - images/lake.jpg
     - images/eat.jpg
+    - images/cat.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

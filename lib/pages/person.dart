@@ -15,7 +15,6 @@ class _PersonPageState extends State<PersonPage> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('我的获取主题${Theme.of(context).primaryColor}');
     Color color = Theme.of(context).primaryColor;
     // Color color = Color.fromRGBO(255, 127, 102, 1.0);
     return Scaffold(
@@ -42,6 +41,15 @@ class _PersonPageState extends State<PersonPage> {
         children: <Widget>[
           GestureDetector(
             onTap: () async {
+              Navigator.pushNamed(context, '/personalInformation');
+            },
+            child: ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('个人资料'),
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
               final prefs = await SharedPreferences.getInstance();
               final result = await prefs.clear();
               if (result) {
@@ -62,10 +70,6 @@ class _PersonPageState extends State<PersonPage> {
           GestureDetector(
             onTap: () async {
               Navigator.pushNamed(context, '/version');
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => VersionPage()),
-              // );
             },
             child: ListTile(
               leading: const Icon(Icons.verified),

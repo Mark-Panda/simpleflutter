@@ -6,6 +6,9 @@ import '../pages/message.dart';
 import '../pages/category.dart';
 import '../pages/person.dart';
 import '../pages/version.dart';
+import '../pages/PersonalInformation.dart';
+import '../pages/cardDetail.dart';
+import '../pages/Tabs.dart';
 
 //配置路由
 final routers = {
@@ -15,12 +18,14 @@ final routers = {
   '/message': (context, {arguments}) => MessagePage(),
   '/person': (context, {arguments}) => PersonPage(),
   '/version': (context) => VersionPage(),
+  '/personalInformation': (context)=> PersonalInformationPage(),
+  '/cardEdit': (context)=> CardDetailPage(),
+  '/tabs': (context, {arguments})=> TabsPage(),
 };
 //固定写法
 var onGenerateRoute = (RouteSettings settings) {
   //统一处理
   final String name = settings.name;
-  print('路由条目${routers}');
   final Function pageContentBuilder = routers[name];
   if (pageContentBuilder != null) {
     if (settings.arguments != null) {

@@ -1,6 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
+List listData= [];
 
 //有状态的
 class MessagePage extends StatefulWidget {
@@ -10,168 +13,155 @@ class MessagePage extends StatefulWidget {
   _MessagePageState createState() => new _MessagePageState();
 }
 
-
 class _MessagePageState extends State<MessagePage> {
 
-  
+  String _data = "暂无数据";
+  String _dbName = 'temp.db'; //数据库名称
+  String _queryCards = 'SELECT * FROM card_table';
+
+  @override
+  void initState() {
+    super.initState();
+    _query(_dbName,_queryCards); //初始化查询出所有的卡片
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
     Color color = Theme.of(context).primaryColor;
-    Widget buttonSection = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildButtonColumn(color, Icons.call, 'CALL'),
-          _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-          _buildButtonColumn(color, Icons.share, 'SHARE'),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('卡片管理'),
+        automaticallyImplyLeading: false, //去掉返回按钮
+        backgroundColor: color,
+      ),
+      body: CardListPage(),
+      floatingActionButton: FloatingActionButton(
+          //悬浮按钮
+          child: Icon(Icons.add),
+          onPressed: () async {
+              Navigator.pushNamed(context, '/cardEdit');
+            },
       ),
     );
-
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('资讯标题'),
-          automaticallyImplyLeading: false, //去掉返回按钮
-          backgroundColor: color,
-        ),
-        body: Column(
-          children: <Widget>[
-            Image.asset(
-              'images/lake.jpg',
-              width: 600,
-              height: 240,
-              fit: BoxFit.cover,
-            ),
-            titleSection,
-            buttonSection,
-            textSection,
-            ],
-          ),
-      );
-    }
-
-  Widget titleSection = Container(
-    padding: const EdgeInsets.all(32),
-    child: Row(
-      children: [
-        Expanded(
-          /*1*/
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /*2*/
-              Container(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  '资讯',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Text(
-                'Kandersteg, Switzerland',
-                style: TextStyle(
-                  color: Colors.grey[500],
-                ),
-              ),
-            ],
-          ),
-        ),
-        /*3*/
-        FavoriteWidget(),
-        // Icon(
-        //   Icons.star,
-        //   color: Colors.red[500],
-        // ),
-        // Text('41'),
-      ],
-    ),
-  );
-
-  Widget textSection = Container(
-    padding: const EdgeInsets.all(32),
-    child: Text(
-      'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-          'Alps. Situated 1,578 meters above sea level, it is one of the '
-          'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-          'half-hour walk through pastures and pine forest, leads you to the '
-          'lake, which warms to 20 degrees Celsius in the summer. Activities '
-          'enjoyed here include rowing, and riding the summer toboggan run.',
-      softWrap: true,
-    ),
-  );
+  }
 
 
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ),
-        ),
-      ],
-    );
+  //添加到数据库中
+  _add(String dbName, String sql) async {
+    //获取数据库路径
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dbName);
+    print("数据库路径：$path");
+
+    Database db = await openDatabase(path);
+    await db.transaction((txn) async {
+      int count = await txn.rawInsert(sql);
+    });
+    await db.close();
+
+    setState(() {
+      _data = "插入数据成功！";
+    });
+  }
+
+  ///查全部
+  _query(String dbName, String sql) async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dbName);
+
+    Database db = await openDatabase(path);
+    listData = await db.rawQuery(sql);
+    await db.close();
+    setState(() {
+      // print('所有的卡片${listData}');
+      _data = "数据详情：$listData";
+    });
   }
 
 }
 
-class FavoriteWidget extends StatefulWidget {
+
+class CardListPage extends StatefulWidget {
+  CardListPage({Key key}) : super(key: key);
+
   @override
-  _FavoriteWidgetState createState() => _FavoriteWidgetState();
+  _CardListPageState createState() => new _CardListPageState();
 }
 
-class _FavoriteWidgetState extends State<FavoriteWidget> {
-  bool _isFavorited = true;
-  int _favoriteCount = 41;
-  
-  void _toggleFavorite() {
-  setState(() {
-    if (_isFavorited) {
-      _favoriteCount -= 1;
-      _isFavorited = false;
-    } else {
-      _favoriteCount += 1;
-      _isFavorited = true;
-    }
-  });
-}
-
-  // ···
+class _CardListPageState extends State<CardListPage> {
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: EdgeInsets.all(0),
-          child: IconButton(
-            padding: EdgeInsets.all(0),
-            alignment: Alignment.centerRight,
-            icon: (_isFavorited ? Icon(Icons.star) : Icon(Icons.star_border)),
-            color: Colors.red[500],
-            onPressed: _toggleFavorite,
-          ),
-        ),
-        SizedBox(
-          width: 18,
-          child: Container(
-            child: Text('$_favoriteCount'),
-          ),
-        ),
-      ],
-    );
+  Widget build(BuildContext context){
+    Color color = Theme.of(context).primaryColor;
+    return ListView(
+        children: listData.map((value){
+
+          return Slidable(
+            actionPane: SlidableScrollActionPane(),//滑出选项的面板 动画
+            actionExtentRatio: 0.25,
+            child: Card(
+              child: Column(
+                children: <Widget>[
+                  new Divider(),
+                  ListTile(
+                    leading: new Image.asset(
+                        'images/cat.jpg', 
+                        fit: BoxFit.contain
+                      ) ,
+                    title:Text(value["cardNo"]),
+                    trailing: Wrap(
+                      spacing: 12, // space between two icons
+                      children: <Widget>[
+                        Text(value["title"]), // icon-1
+                      ],
+                    ),
+                    onTap: _ViewCardBtn(),
+                  ),
+                  new Divider(),
+                  
+                ]
+              )
+            ),
+            secondaryActions: <Widget>[//右侧按钮列表
+                IconSlideAction(
+                    caption: '删除',
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    closeOnTap: false,
+                    onTap: (){
+                        // _showSnackBar('Delete');
+                    },
+                ),
+            ],
+          );
+          
+          // return Card(
+          //   child: Column(
+          //     children: <Widget>[
+          //       new Divider(),
+          //       ListTile(
+          //         leading: new Image.asset(
+          //             'images/cat.jpg', 
+          //             fit: BoxFit.contain
+          //           ) ,
+          //         title:Text(value["cardNo"]),
+          //         trailing: Wrap(
+          //           spacing: 12, // space between two icons
+          //           children: <Widget>[
+          //             Text(value["title"]), // icon-1
+          //           ],
+          //         ),
+          //         onTap: _ViewCardBtn(),
+          //       ),
+          //       new Divider(),
+          //     ]
+          //   )
+          // );
+        }).toList(),
+      );
+  }
+
+  //查看卡片详情
+  _ViewCardBtn() {
+
   }
 }

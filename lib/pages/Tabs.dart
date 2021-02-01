@@ -8,16 +8,23 @@ import 'person.dart';
 
 //有状态的
 class TabsPage extends StatefulWidget {
-  TabsPage({Key key}) : super(key: key);
+  final Map<String , num> arguments;
 
+  TabsPage({Key key, this.arguments}) : super(key: key);
+  
   @override
-  _TabsPageState createState() => new _TabsPageState();
+  _TabsPageState createState() => new _TabsPageState(arguments: this.arguments);
 }
 
 
 class _TabsPageState extends State<TabsPage> {
 
-  int _currentIndex=0;
+  Map arguments;
+  _TabsPageState({this.arguments});
+
+  int _currentIndex= 0;
+  
+  
   final List<Widget> _pageList = [
     
     HomePage(),
@@ -25,12 +32,20 @@ class _TabsPageState extends State<TabsPage> {
     MessagePage(),
     PersonPage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    print('初始化arg${arguments}');
+    _currentIndex = arguments['index'];
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
-    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
-    print('Tabs 主题色${color}');
+    print('argument${arguments['index']}');
+    // _currentIndex = arguments['index'] ? arguments['index'] : _currentIndex;
     return Scaffold(
         body: this._pageList[this._currentIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -54,7 +69,7 @@ class _TabsPageState extends State<TabsPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.message),
-              title: Text("资讯"),
+              title: Text("卡片管理"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
