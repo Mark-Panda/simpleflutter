@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'category.dart';
 import 'cardManage.dart';
 import 'person.dart';
 
@@ -26,9 +25,7 @@ class _TabsPageState extends State<TabsPage> {
   
   
   final List<Widget> _pageList = [
-    
     HomePage(),
-    CategoryPage(),
     CardManagePage(),
     PersonPage(),
   ];
@@ -36,7 +33,6 @@ class _TabsPageState extends State<TabsPage> {
   @override
   void initState() {
     super.initState();
-    print('初始化arg${arguments}');
     _currentIndex = arguments['index'];
   }
 
@@ -44,8 +40,6 @@ class _TabsPageState extends State<TabsPage> {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
-    print('argument${arguments['index']}');
-    // _currentIndex = arguments['index'] ? arguments['index'] : _currentIndex;
     return Scaffold(
         body: this._pageList[this._currentIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -62,10 +56,6 @@ class _TabsPageState extends State<TabsPage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               title: Text("首页"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category),
-              title: Text("分类"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.credit_card),

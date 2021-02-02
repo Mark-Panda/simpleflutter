@@ -14,8 +14,9 @@ class _HomePageAState extends State<HomePage> {
     String _dbName = 'ma.db'; //数据库名称
 
     
-    String _createStudentTableSQL =
-        'CREATE TABLE student_table (id INTEGER PRIMARY KEY, name TEXT,age INTEGER)'; //创建学生表;
+    
+    String _createPrivacyTableSQL =
+        'CREATE TABLE privacy_table (id INTEGER PRIMARY KEY, name TEXT,password INTEGER)'; //创建隐私表;
     String _createCardTableSQL =
         'CREATE TABLE card_table (id INTEGER PRIMARY KEY, cardNo TEXT,title TEXT,password TEXT)'; //创建卡片表;
     int _dbVersion = 1; //数据库版本
@@ -24,11 +25,11 @@ class _HomePageAState extends State<HomePage> {
     void initState() {
       super.initState();
       //创建数据库、学生表
-      _createDb(_dbName, _dbVersion, _createStudentTableSQL, _createCardTableSQL);
+      _createDb(_dbName, _dbVersion, _createPrivacyTableSQL, _createCardTableSQL);
     }
 
     ///创建数据库db
-  _createDb(String dbName, int vers, String studentTable, String cardTable) async {
+  _createDb(String dbName, int vers, String privacyTable, String cardTable) async {
     //获取数据库路径
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName);
@@ -39,12 +40,14 @@ class _HomePageAState extends State<HomePage> {
       //数据库升级,只回调一次
       print("数据库需要升级！旧版：$oldVersion,新版：$newVersion");
     }, onCreate: (Database db, int vers) async {
-      print('创建成功数据库Home');
       //创建表，只回调一次
-      await db.execute(studentTable);
+      await db.execute(privacyTable);
       await db.execute(cardTable);
+      var sql = "INSERT INTO privacy_table(name,password) VALUES('root','111111')";
+      await db.transaction((txn) async {
+        int count = await txn.rawInsert(sql);
+      });
       await db.close();
-      print('关闭连接');
     });
 
     setState(() {
@@ -72,7 +75,7 @@ class _HomePageAState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('横批标题'),
+          title: Text('看我哦'),
           automaticallyImplyLeading: false, //去掉返回按钮
           backgroundColor: color,
         ),

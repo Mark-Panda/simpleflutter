@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'login.dart';
 import 'version.dart';
 
 //有状态的
@@ -50,55 +50,41 @@ class _PersonPageState extends State<PersonPage> {
           ),
           GestureDetector(
             onTap: () async {
-              final prefs = await SharedPreferences.getInstance();
-              final result = await prefs.clear();
-              if (result) {
-                debugPrint('退出登录成功');
-                
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                  (route) => route == null,
-                );
-              }
-            },
-            child: ListTile(
-              leading: const Icon(Icons.outlined_flag),
-              title: const Text('退出登录'),
-            ),
-          ),
-          GestureDetector(
-            onTap: () async {
               Navigator.pushNamed(context, '/version');
             },
             child: ListTile(
               leading: const Icon(Icons.verified),
               title: const Text('版本信息'),
             ),
-          )
-        ],
-      ),
-    );
-  }
-
-  //版本信息查看
-  _VersionViewBtn() {
-    return Expanded(
-      child: ListView(
-        children: <Widget>[
+          ),
           GestureDetector(
             onTap: () async {
-              // Navigator.pushNamed(context, '/version',arguments: {});
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VersionPage()),
-                );
+              Navigator.pushNamed(context, '/privacyPwd');
             },
             child: ListTile(
               leading: const Icon(Icons.verified),
-              title: const Text('版本信息'),
+              title: const Text('隐私密码'),
             ),
-          )
+          ),
+          // GestureDetector(
+          //   onTap: () async {
+          //     final prefs = await SharedPreferences.getInstance();
+          //     final result = await prefs.clear();
+          //     if (result) {
+          //       debugPrint('退出登录成功');
+                
+          //       Navigator.pushAndRemoveUntil(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => LoginPage()),
+          //         (route) => route == null,
+          //       );
+          //     }
+          //   },
+          //   child: ListTile(
+          //     leading: const Icon(Icons.outlined_flag),
+          //     title: const Text('退出登录'),
+          //   ),
+          // ),
         ],
       ),
     );

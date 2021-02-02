@@ -40,7 +40,7 @@ class _CardManagePageState extends State<CardManagePage> {
         //悬浮按钮
         child: Icon(Icons.add),
         onPressed: () async {
-          Navigator.pushNamed(context, '/cardEdit');
+          Navigator.pushNamed(context, '/cardAdd');
         },
       ),
     );
@@ -125,7 +125,7 @@ class _CardListPageState extends State<CardListPage> {
                     ],
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, '/cardUpdate',arguments: value);
+                    Navigator.pushNamed(context, '/cardView',arguments: {...value, 'display': false});
                   },
                 ),
                 new Divider(),
@@ -141,7 +141,7 @@ class _CardListPageState extends State<CardListPage> {
               closeOnTap: true,
               onTap: () {
                 String _deleteSql = _deleteCards + 'id = ${value["id"]}';
-                print('删除语句${_deleteSql}');
+                // print('删除语句${_deleteSql}');
                 _delete(_dbName, _deleteSql);
               },
             ),

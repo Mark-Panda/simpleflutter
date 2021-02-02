@@ -16,12 +16,20 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
     // Color color = Color.fromRGBO(255, 127, 102, 1.0);
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text('个人资料'),
           backgroundColor: color,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {},
+            ),
+          ],
+
         ),
         body: ListView(
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 10)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             ClipOval( //圆形头像
               child: new Image.asset(
                 'images/cat.jpg', 
@@ -30,24 +38,46 @@ class _PersonalInformationPageState extends State<PersonalInformationPage> {
                 fit: BoxFit.contain
               ),
             ),
-            Padding(padding: EdgeInsets.only(top: 10)),
+            Padding(padding: EdgeInsets.only(top: 30)),
             ListTile(
               title: Text('昵称'),
               trailing: Wrap(
                 spacing: 12, // space between two icons
                 children: <Widget>[
                   Text('simple'), // icon-1
-                  Icon(Icons.chevron_right), // icon-2
+                  // Icon(Icons.chevron_right), // icon-2
                 ],
               ),
             ),
             ListTile(
               title: Text('生日'),
-              trailing: Icon(Icons.chevron_right)
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  Text('11-21'), // icon-1
+                  // Icon(Icons.chevron_right), // icon-2
+                ],
+              ),
             ),
             ListTile(
               title: Text('年龄'),
-              trailing: Icon(Icons.chevron_right)
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  Text('20'), // icon-1
+                  // Icon(Icons.chevron_right), // icon-2
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text('个人签名'),
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  Text('20'), // icon-1
+                  // Icon(Icons.chevron_right), // icon-2
+                ],
+              ),
             ),
           ],
         ),
