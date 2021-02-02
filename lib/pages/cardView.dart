@@ -121,7 +121,64 @@ class _CardViewPageState extends State<CardViewPage> {
                       right: 40.0,
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/cardUpdate',arguments: arguments); 
+                      // Navigator.pushNamed(context, '/cardUpdate',arguments: arguments); 
+                      showDialog<Null>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                              return new AlertDialog(
+                                  title: new Text('隐私密码'),
+                                  content: new SingleChildScrollView(
+                                      child: new ListBody(
+                                          children: <Widget>[
+                                              TextField(
+                                                inputFormatters: <TextInputFormatter>[
+                                                  FilteringTextInputFormatter.digitsOnly,  //只允许输入数字
+                                                  LengthLimitingTextInputFormatter(6)        //限制长度为6
+                                                ],
+                                                obscureText: true,
+                                                keyboardType: TextInputType.text,
+                                                style: TextStyle(color: Color(0xFF888888)),
+                                                controller: _privacyPwdController,
+                                                decoration: InputDecoration(
+                                                  hintText: "请输入隐私密码",
+                                                  hintStyle: TextStyle(color: Color(0xFF888888)),
+                                                  contentPadding:
+                                                      EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
+                                                  border: OutlineInputBorder(
+                                                    // borderRadius: BorderRadius.circular(8.0),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                      ),
+                                  ),
+                                  actions: <Widget>[
+                                      new FlatButton(
+                                          child: new Text('取消'),
+                                          onPressed: () {
+                                              Navigator.of(context).pop();
+                                          },
+                                      ),
+                                      new FlatButton(
+                                          child: new Text('确定'),
+                                          onPressed: () async{
+                                            var querySql = "SELECT * FROM privacy_table where id = 1";
+                                            var result = await _query(_dbName,querySql);
+                                            if (_privacyPwdController.text.toString() != result[0]['password'].toString()) {
+                                              Fluttertoast.showToast(
+                                                msg: "隐私密码错误！", backgroundColor: Colors.orange);
+                                              return;
+                                            }
+                                            Navigator.of(context).pop();
+                                            Navigator.pushNamed(context, '/cardUpdate',arguments: arguments);
+                                            
+                                          },
+                                      ),
+                                  ],
+                              );
+                          },
+                      );
                     },
                     child: Text(
                       "去修改",
@@ -156,6 +213,7 @@ class _CardViewPageState extends State<CardViewPage> {
                                                   FilteringTextInputFormatter.digitsOnly,  //只允许输入数字
                                                   LengthLimitingTextInputFormatter(6)        //限制长度为6
                                                 ],
+                                                obscureText: true,
                                                 keyboardType: TextInputType.text,
                                                 style: TextStyle(color: Color(0xFF888888)),
                                                 controller: _privacyPwdController,

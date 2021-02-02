@@ -117,13 +117,13 @@ class _CardListPageState extends State<CardListPage> {
                     value["cardNo"],
                     style: TextStyle(fontSize: 14),
                   ),
-                  trailing: Wrap(
-                    spacing: 12, // space between two icons
-                    children: <Widget>[
-                      Text(value["title"]), // icon-1
-                      Text(value["password"]), // icon-1
-                    ],
-                  ),
+                  // trailing: Wrap(
+                  //   spacing: 12, // space between two icons
+                  //   children: <Widget>[
+                  //     Text(value["title"]), // icon-1
+                  //     Text(value["password"]), // icon-1
+                  //   ],
+                  // ),
                   onTap: () {
                     Navigator.pushNamed(context, '/cardView',arguments: {...value, 'display': false});
                   },

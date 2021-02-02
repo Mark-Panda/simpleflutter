@@ -60,6 +60,7 @@ class _PrivacyPwdPageState extends State<PrivacyPwdPage> {
                 FilteringTextInputFormatter.digitsOnly,  //只允许输入数字
                 LengthLimitingTextInputFormatter(6)        //限制长度为6
               ],
+              obscureText: true,
               keyboardType: TextInputType.text,
               style: TextStyle(color: Color(0xFF888888)),
               controller: _newPwdController,
@@ -80,13 +81,18 @@ class _PrivacyPwdPageState extends State<PrivacyPwdPage> {
                 onPressed: () async{
                   if (_oldPwdController.text == null || _oldPwdController.text == "") {
                     Fluttertoast.showToast(
-                        msg: "插入数据不能为空！", backgroundColor: Colors.orange);
+                        msg: "旧密码不能为空！", backgroundColor: Colors.orange);
                     return;
                   }
                   if (_newPwdController.text == null ||
-                      _newPwdController.text == "") {
+                      _newPwdController.text == "" ) {
                     Fluttertoast.showToast(
-                        msg: "插入数据不能为空！", backgroundColor: Colors.orange);
+                        msg: "新密码不能为空！", backgroundColor: Colors.orange);
+                    return;
+                  }
+                  if ( _newPwdController.text == "000000") {
+                    Fluttertoast.showToast(
+                        msg: "密码太简单,请重新设置！", backgroundColor: Colors.orange);
                     return;
                   }
                   var querySql = "SELECT * FROM privacy_table where id = 1";
