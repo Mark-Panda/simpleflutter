@@ -11,28 +11,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageAState extends State<HomePage> {
 
-  String _data = "暂无数据";
-    String _dbName = 'text.db'; //数据库名称
+    String _dbName = 'ma.db'; //数据库名称
 
-    List _allTableList = [
-      'CREATE TABLE student_table (id INTEGER PRIMARY KEY, name TEXT,age INTEGER)',
-      'CREATE TABLE card_table (id INTEGER PRIMARY KEY, cardNo TEXT,title TEXT)'
-    ];
+    
     String _createStudentTableSQL =
         'CREATE TABLE student_table (id INTEGER PRIMARY KEY, name TEXT,age INTEGER)'; //创建学生表;
     String _createCardTableSQL =
-        'CREATE TABLE card_table (id INTEGER PRIMARY KEY, cardNo TEXT,title TEXT)'; //创建卡片表;
+        'CREATE TABLE card_table (id INTEGER PRIMARY KEY, cardNo TEXT,title TEXT,password TEXT)'; //创建卡片表;
     int _dbVersion = 1; //数据库版本
 
     @override
     void initState() {
       super.initState();
       //创建数据库、学生表
-      _createDb(_dbName, _dbVersion, _createStudentTableSQL, _createCardTableSQL, _allTableList);
+      _createDb(_dbName, _dbVersion, _createStudentTableSQL, _createCardTableSQL);
     }
 
     ///创建数据库db
-  _createDb(String dbName, int vers, String studentTable, String cardTable, List tablesList) async {
+  _createDb(String dbName, int vers, String studentTable, String cardTable) async {
     //获取数据库路径
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName);
@@ -44,19 +40,14 @@ class _HomePageAState extends State<HomePage> {
       print("数据库需要升级！旧版：$oldVersion,新版：$newVersion");
     }, onCreate: (Database db, int vers) async {
       print('创建成功数据库Home');
-      tablesList.map((value){
-        print('创建成功表${value}');
-        db.execute(value);
-      });
-      print('关闭连接');
       //创建表，只回调一次
-      // await db.execute(studentTable);
-      // await db.execute(cardTable);
+      await db.execute(studentTable);
+      await db.execute(cardTable);
       await db.close();
+      print('关闭连接');
     });
 
     setState(() {
-      _data = "成功创建数据库db！\n数据库路径: $path \n数据库版本$vers";
     });
   }
 

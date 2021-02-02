@@ -9,6 +9,7 @@ import '../pages/version.dart';
 import '../pages/PersonalInformation.dart';
 import '../pages/cardDetail.dart';
 import '../pages/Tabs.dart';
+import '../pages/cardEdit.dart';
 
 //配置路由
 final routers = {
@@ -20,7 +21,8 @@ final routers = {
   '/version': (context) => VersionPage(),
   '/personalInformation': (context)=> PersonalInformationPage(),
   '/cardEdit': (context)=> CardDetailPage(),
-  '/tabs': (context, {arguments})=> TabsPage(),
+  '/cardUpdate': (context, {arguments})=> CardEditPage(arguments: arguments),
+  '/tabs': (context, {arguments})=> TabsPage(arguments: arguments),
 };
 //固定写法
 var onGenerateRoute = (RouteSettings settings) {

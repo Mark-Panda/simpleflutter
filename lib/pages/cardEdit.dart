@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -5,20 +7,33 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'Tabs.dart';
 
 //有状态的
-class CardDetailPage extends StatefulWidget {
-  CardDetailPage({Key key}) : super(key: key);
+class CardEditPage extends StatefulWidget {
+  final Map arguments;
+  CardEditPage({Key key, this.arguments}) : super(key: key);
 
   @override
-  _CardDetailPageState createState() => new _CardDetailPageState();
+  _CardEditPageState createState() => new _CardEditPageState(arguments: this.arguments);
 }
 
-class _CardDetailPageState extends State<CardDetailPage> {
-  TextEditingController _cardNoController = new TextEditingController();
-  TextEditingController _descController = new TextEditingController();
-  TextEditingController _pwdController = new TextEditingController();
+class _CardEditPageState extends State<CardEditPage> {
+
+  Map arguments;
+  _CardEditPageState({this.arguments});
+
+  TextEditingController _cardNoController;
+  TextEditingController _descController;
+  TextEditingController _pwdController;
   String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
 
+  @override
+  void initState() {
+    super.initState();
+    _cardNoController = new TextEditingController(text: arguments['cardNo']);
+    _descController = new TextEditingController(text: arguments['title']);
+    _pwdController = new TextEditingController(text: arguments['password']);
+  }
+  
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
@@ -27,7 +42,7 @@ class _CardDetailPageState extends State<CardDetailPage> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          "新增卡片",
+          "修改卡片",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -37,6 +52,7 @@ class _CardDetailPageState extends State<CardDetailPage> {
           children: <Widget>[
             Padding(padding: EdgeInsets.only(top: 10)),
             TextField(
+              enabled: false, //只读
               keyboardType: TextInputType.text,
               style: TextStyle(color: Color(0xFF888888)),
               controller: _cardNoController,
@@ -87,25 +103,26 @@ class _CardDetailPageState extends State<CardDetailPage> {
             Padding(padding: EdgeInsets.only(top: 30)),
             RaisedButton(
                 onPressed: () {
-                  if (_cardNoController.text == null ||
-                      _cardNoController.text == "") {
-                    Fluttertoast.showToast(
-                        msg: "插入数据不能为空！", backgroundColor: Colors.orange);
-                    return;
-                  }
+                  
                   if (_descController.text == null ||
                       _descController.text == "") {
                     Fluttertoast.showToast(
-                        msg: "插入数据不能为空！", backgroundColor: Colors.orange);
+                        msg: "问题描述不能为空！", backgroundColor: Colors.orange);
                     return;
                   }
-                  String sql =
-                      "INSERT INTO card_table(cardNo,title,password) VALUES('${_cardNoController.text}','${_descController.text}','${_pwdController.text}')";
-                  _add(_dbName, sql);
+                  if (_pwdController.text == null ||
+                      _pwdController.text == "") {
+                    Fluttertoast.showToast(
+                        msg: "卡密信息不能为空！", backgroundColor: Colors.orange);
+                    return;
+                  }
+                  String sql = "UPDATE card_table SET cardNo = ?, title = ?,password = ? WHERE id = ?";
+                  _update(_dbName, sql, [_cardNoController.text, _descController.text, _pwdController.text, arguments['id']]);
                   Navigator.pushNamed(context, '/tabs',arguments: {'index': 2});
+                  
                 },
                 child: Text(
-                  "添加卡片",
+                  "修改卡片",
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 color: color,
@@ -121,6 +138,26 @@ class _CardDetailPageState extends State<CardDetailPage> {
     );
   }
 
+
+  ///改
+  _update(String dbName, String sql, List arg) async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dbName);
+
+    Database db = await openDatabase(path);
+    int count = await db.rawUpdate(sql, arg); //修改条件，对应参数值
+    await db.close();
+    if (count > 0) {
+      setState(() {
+        _data = "更新数据库操作完成，该sql删除条件下的数目为：$count";
+      });
+    } else {
+      setState(() {
+        _data = "无法更新数据库，该sql删除条件下的数目为：$count";
+      });
+    }
+  }
+
   ///增
   _add(String dbName, String sql) async {
     //获取数据库路径
@@ -128,10 +165,10 @@ class _CardDetailPageState extends State<CardDetailPage> {
     String path = join(databasesPath, dbName);
     print("插入的卡片SQL：$path");
 
-    Database db = await openDatabase(path);
-    await db.transaction((txn) async {
-      int count = await txn.rawInsert(sql);
-    });
-    await db.close();
+    // Database db = await openDatabase(path);
+    // await db.transaction((txn) async {
+    //   int count = await txn.rawInsert(sql);
+    // });
+    // await db.close();
   }
 }
