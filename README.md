@@ -1,16 +1,12 @@
-# flutter_application_1
+# 用于个人学习的Flutter开发的APP
+通过在学习过程中，将一些学习到的东西加入到APP中，做出一个有意思的APP。
+## 基础功能
+APP暂时的基础功能包含 `启动图` `主页` `分类` `卡密管理` `个人中心`
+### 主页
+登录成功后进去主页面
+### 分类
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 卡密管理
+卡密管理的功能是展示卡片列表,点击进入卡片详情页面,左滑可以进行删除，还可以点击 `+` 按钮进入添加页面。
+### 个人中心
+个人中心包括 `退出登录` `个人信息` `版本信息`
