@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 List listData= [];
 
@@ -78,6 +79,8 @@ class _MessagePageState extends State<MessagePage> {
     });
   }
 
+  
+
 }
 
 
@@ -92,10 +95,14 @@ class _CardListPageState extends State<CardListPage> {
   @override
   Widget build(BuildContext context){
     Color color = Theme.of(context).primaryColor;
+    String _deleteCards = 'DELETE FROM card_table WHERE ';
+    final SlidableController slidableController = SlidableController(); //只允许打开一个侧滑
+    String _dbName = 'temp.db'; //数据库名称
     return ListView(
         children: listData.map((value){
 
           return Slidable(
+            controller: slidableController, //只允许打开一个侧滑
             actionPane: SlidableScrollActionPane(),//滑出选项的面板 动画
             actionExtentRatio: 0.25,
             child: Card(
@@ -126,38 +133,42 @@ class _CardListPageState extends State<CardListPage> {
                     caption: '删除',
                     color: Colors.red,
                     icon: Icons.delete,
-                    closeOnTap: false,
+                    closeOnTap: true,
                     onTap: (){
-                        // _showSnackBar('Delete');
+                      String _deleteSql = _deleteCards + 'id = ${value["id"]}';
+                      print('删除语句${_deleteSql}');
+                      _delete(_dbName,_deleteSql);
                     },
                 ),
             ],
           );
-          
-          // return Card(
-          //   child: Column(
-          //     children: <Widget>[
-          //       new Divider(),
-          //       ListTile(
-          //         leading: new Image.asset(
-          //             'images/cat.jpg', 
-          //             fit: BoxFit.contain
-          //           ) ,
-          //         title:Text(value["cardNo"]),
-          //         trailing: Wrap(
-          //           spacing: 12, // space between two icons
-          //           children: <Widget>[
-          //             Text(value["title"]), // icon-1
-          //           ],
-          //         ),
-          //         onTap: _ViewCardBtn(),
-          //       ),
-          //       new Divider(),
-          //     ]
-          //   )
-          // );
         }).toList(),
       );
+  }
+
+  ///删
+  _delete(String dbName, String sql) async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dbName);
+    String _queryCards = 'SELECT * FROM card_table';
+    Database db = await openDatabase(path);
+    int count = await db.rawDelete(sql);
+    await db.close();
+    print('删除条数${count}');
+    if (count > 0) {
+      _query(dbName, _queryCards);
+    } else {
+      Fluttertoast.showToast( msg: "删除失败，请重新尝试！", backgroundColor: Colors.orange);
+    }
+  }
+
+  ///查全部
+  _query(String dbName, String sql) async {
+    var databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, dbName);
+    Database db = await openDatabase(path);
+    listData = await db.rawQuery(sql);
+    await db.close();
   }
 
   //查看卡片详情
