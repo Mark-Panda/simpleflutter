@@ -7,14 +7,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 List listData = [];
 
 //有状态的
-class MessagePage extends StatefulWidget {
-  MessagePage({Key key}) : super(key: key);
+class CardManagePage extends StatefulWidget {
+  CardManagePage({Key key}) : super(key: key);
 
   @override
-  _MessagePageState createState() => new _MessagePageState();
+  _CardManagePageState createState() => new _CardManagePageState();
 }
 
-class _MessagePageState extends State<MessagePage> {
+class _CardManagePageState extends State<CardManagePage> {
   String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
   String _queryCards = 'SELECT * FROM card_table';
@@ -31,7 +31,7 @@ class _MessagePageState extends State<MessagePage> {
     Color color = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: AppBar(
-        title: Text('卡片管理'),
+        title: Text('卡密管理'),
         automaticallyImplyLeading: false, //去掉返回按钮
         backgroundColor: color,
       ),

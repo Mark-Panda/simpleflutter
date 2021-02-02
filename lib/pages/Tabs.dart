@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'category.dart';
-import 'message.dart';
+import 'cardManage.dart';
 import 'person.dart';
 
 
@@ -29,7 +29,7 @@ class _TabsPageState extends State<TabsPage> {
     
     HomePage(),
     CategoryPage(),
-    MessagePage(),
+    CardManagePage(),
     PersonPage(),
   ];
 
@@ -68,8 +68,8 @@ class _TabsPageState extends State<TabsPage> {
               title: Text("分类"),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.message),
-              title: Text("卡片管理"),
+              icon: Icon(Icons.credit_card),
+              title: Text("卡密管理"),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

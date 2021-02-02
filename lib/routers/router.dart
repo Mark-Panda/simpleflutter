@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/startup.dart';
 import '../pages/login.dart';
 import '../pages/home.dart';
-import '../pages/message.dart';
+import '../pages/cardManage.dart';
 import '../pages/category.dart';
 import '../pages/person.dart';
 import '../pages/version.dart';
@@ -16,7 +16,7 @@ final routers = {
   '/': (context) => StartupPage(),
   '/home': (context) => HomePage(),
   '/category': (context) => CategoryPage(),
-  '/message': (context, {arguments}) => MessagePage(),
+  '/cardManage': (context, {arguments}) => CardManagePage(),
   '/person': (context, {arguments}) => PersonPage(),
   '/version': (context) => VersionPage(),
   '/personalInformation': (context)=> PersonalInformationPage(),
