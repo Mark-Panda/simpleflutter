@@ -15,14 +15,15 @@ class CardManagePage extends StatefulWidget {
 }
 
 class _CardManagePageState extends State<CardManagePage> {
-  String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
   String _queryCards = 'SELECT * FROM card_table';
 
   @override
   void initState() {
     super.initState();
+    
     _query(_dbName, _queryCards); //初始化查询出所有的卡片
+    print('卡片列表$listData');
   }
 
   // This widget is the root of your application.
@@ -59,9 +60,7 @@ class _CardManagePageState extends State<CardManagePage> {
     });
     await db.close();
 
-    setState(() {
-      _data = "插入数据成功！";
-    });
+    
   }
 
   ///查全部
@@ -70,13 +69,13 @@ class _CardManagePageState extends State<CardManagePage> {
     String path = join(databasesPath, dbName);
 
     Database db = await openDatabase(path);
-    print('SQLSQL${sql}');
-    listData = await db.rawQuery(sql);
-    await db.close();
+    var result = await db.rawQuery(sql);
+    print('查到的卡片liebiao$result');
     setState(() {
-      print('所有的卡片${listData}');
-      _data = "数据详情：$listData";
+      listData = result;
     });
+    await db.close();
+    
   }
 }
 
@@ -176,7 +175,11 @@ class _CardListPageState extends State<CardListPage> {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName);
     Database db = await openDatabase(path);
-    listData = await db.rawQuery(sql);
+    var result = await db.rawQuery(sql);
+    print('查到的卡片liebiao$result');
+    setState(() {
+      listData = result;
+    });
     await db.close();
   }
 

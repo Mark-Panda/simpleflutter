@@ -22,7 +22,6 @@ class _CardUpdatePageState extends State<CardUpdatePage> {
   TextEditingController _cardNoController;
   TextEditingController _descController;
   TextEditingController _pwdController;
-  String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
 
   @override
@@ -173,28 +172,8 @@ class _CardUpdatePageState extends State<CardUpdatePage> {
     Database db = await openDatabase(path);
     int count = await db.rawUpdate(sql, arg); //修改条件，对应参数值
     await db.close();
-    if (count > 0) {
-      setState(() {
-        _data = "更新数据库操作完成，该sql删除条件下的数目为：$count";
-      });
-    } else {
-      setState(() {
-        _data = "无法更新数据库，该sql删除条件下的数目为：$count";
-      });
-    }
+    
   }
 
-  ///增
-  _add(String dbName, String sql) async {
-    //获取数据库路径
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, dbName);
-    print("插入的卡片SQL：$path");
-
-    // Database db = await openDatabase(path);
-    // await db.transaction((txn) async {
-    //   int count = await txn.rawInsert(sql);
-    // });
-    // await db.close();
-  }
+  
 }

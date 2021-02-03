@@ -23,7 +23,6 @@ class _CardViewPageState extends State<CardViewPage> {
   TextEditingController _cardNoController;
   TextEditingController _descController;
   TextEditingController _pwdController;
-  String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
   var isDisplay = false;
   bool _isButtonDisabled;
@@ -31,7 +30,6 @@ class _CardViewPageState extends State<CardViewPage> {
   @override
   void initState() {
     super.initState();
-    print('视图${arguments}');
     isDisplay =  arguments['display'];
     _isButtonDisabled = false;
     _cardNoController = new TextEditingController(text: arguments['cardNo']);

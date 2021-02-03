@@ -53,7 +53,7 @@ class _PersonPageState extends State<PersonPage> {
               Navigator.pushNamed(context, '/version');
             },
             child: ListTile(
-              leading: const Icon(Icons.verified),
+              leading: const Icon(Icons.flag),
               title: const Text('版本信息'),
             ),
           ),
@@ -62,7 +62,7 @@ class _PersonPageState extends State<PersonPage> {
               Navigator.pushNamed(context, '/privacyPwd');
             },
             child: ListTile(
-              leading: const Icon(Icons.verified),
+              leading: const Icon(Icons.security),
               title: const Text('隐私密码'),
             ),
           ),

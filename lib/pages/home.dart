@@ -19,17 +19,19 @@ class _HomePageAState extends State<HomePage> {
         'CREATE TABLE privacy_table (id INTEGER PRIMARY KEY, name TEXT,password INTEGER)'; //创建隐私表;
     String _createCardTableSQL =
         'CREATE TABLE card_table (id INTEGER PRIMARY KEY, cardNo TEXT,title TEXT,password TEXT)'; //创建卡片表;
+    String _createUserTableSQL =
+        'CREATE TABLE user_table (id INTEGER PRIMARY KEY, avatar TEXT,nickname TEXT,birthday TEXT,age TEXT,personalsignature Text)'; //创建用户信息表;
     int _dbVersion = 1; //数据库版本
 
     @override
     void initState() {
       super.initState();
       //创建数据库、学生表
-      _createDb(_dbName, _dbVersion, _createPrivacyTableSQL, _createCardTableSQL);
+      _createDb(_dbName, _dbVersion, _createPrivacyTableSQL, _createCardTableSQL, _createUserTableSQL);
     }
 
     ///创建数据库db
-  _createDb(String dbName, int vers, String privacyTable, String cardTable) async {
+  _createDb(String dbName, int vers, String privacyTable, String cardTable, String userTable) async {
     //获取数据库路径
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName);
@@ -42,6 +44,11 @@ class _HomePageAState extends State<HomePage> {
     }, onCreate: (Database db, int vers) async {
       //创建表，只回调一次
       await db.execute(privacyTable);
+      await db.execute(userTable);
+      var usersql = "INSERT INTO user_table(avatar,nickname,birthday,age,personalsignature) VALUES('','simple','保密','保密','这个人很懒,什么也没留下!')";
+      await db.transaction((txn) async {
+        int count = await txn.rawInsert(usersql);
+      });
       await db.execute(cardTable);
       var sql = "INSERT INTO privacy_table(name,password) VALUES('root','111111')";
       await db.transaction((txn) async {
@@ -75,23 +82,27 @@ class _HomePageAState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('看我哦'),
+          title: Text('使用手册'),
           automaticallyImplyLeading: false, //去掉返回按钮
           backgroundColor: color,
         ),
-        body: Column(
-          children: <Widget>[
-            Image.asset(
-              'images/lake.jpg',
-              width: 600,
-              height: 240,
+        body: Image.asset(
+              'images/app.jpg',
               fit: BoxFit.cover,
             ),
-            titleSection,
-            buttonSection,
-            textSection,
-          ],
-        ),
+        // body: Column(
+        //   children: <Widget>[
+        //     Image.asset(
+        //       'images/app.jpg',
+        //       width: 600,
+        //       height: 240,
+        //       fit: BoxFit.cover,
+        //     ),
+        //     titleSection,
+        //     buttonSection,
+        //     textSection,
+        //   ],
+        // ),
       );
   }
 

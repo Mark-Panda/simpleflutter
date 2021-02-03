@@ -16,7 +16,6 @@ class _CardAddPageState extends State<CardAddPage> {
   TextEditingController _cardNoController = new TextEditingController();
   TextEditingController _descController = new TextEditingController();
   TextEditingController _pwdController = new TextEditingController();
-  String _data = "暂无数据";
   String _dbName = 'ma.db'; //数据库名称
 
   @override
@@ -131,7 +130,7 @@ class _CardAddPageState extends State<CardAddPage> {
     //获取数据库路径
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, dbName);
-    print("插入的卡片SQL：$path");
+    // print("插入的卡片SQL：$path");
 
     Database db = await openDatabase(path);
     await db.transaction((txn) async {

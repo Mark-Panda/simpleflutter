@@ -5,11 +5,13 @@ import '../pages/cardManage.dart';
 import '../pages/person.dart';
 import '../pages/version.dart';
 import '../pages/PersonalInformation.dart';
+import '../pages/personEdit.dart';
 import '../pages/cardAdd.dart';
 import '../pages/Tabs.dart';
 import '../pages/cardUpdate.dart';
 import '../pages/cardView.dart';
 import '../pages/privacyPwd.dart';
+import '../pages/textEdit.dart';
 
 //配置路由
 final routers = {
@@ -19,11 +21,13 @@ final routers = {
   '/person': (context) => PersonPage(), //底部导航对应的个人中心
   '/version': (context) => VersionPage(),
   '/personalInformation': (context)=> PersonalInformationPage(),
+  '/personEdit': (context, {arguments})=> PersonEditPage(arguments: arguments),
   '/cardAdd': (context)=> CardAddPage(),
   '/cardUpdate': (context, {arguments})=> CardUpdatePage(arguments: arguments),
   '/cardView': (context, {arguments})=> CardViewPage(arguments: arguments),
   '/tabs': (context, {arguments})=> TabsPage(arguments: arguments),  //底部导航
   '/privacyPwd': (context) => PrivacyPwdPage(),   //设置隐私密码
+  '/textEdit': (context, {arguments}) => TextEditPage(arguments: arguments),
 };
 //固定写法
 var onGenerateRoute = (RouteSettings settings) {
