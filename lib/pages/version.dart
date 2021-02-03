@@ -13,33 +13,55 @@ class _VersionPageState extends State<VersionPage> {
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;
-    // Color color = Color.fromRGBO(255, 127, 102, 1.0);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('版本信息'),
-          backgroundColor: color,
-        ),
-        body: Column(
-          children: <Widget>[
-            Container(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Version 1.0',
-                      softWrap: true,
-                    ),
-                    Text(
-                      '个人自制学习的Flutter软件'
-                      '功能包含注册、登录，时间规划、密码提示等',
-                      softWrap: true,
-                    ),
-                  ]
-                )
-            )
-          ],
-        ),
-      );
+      appBar: AppBar(
+        title: Text('版本信息'),
+        backgroundColor: color,
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+              child: Column(children: <Widget>[
+            ListTile(
+              title: Text(
+                '版本',
+                style: TextStyle(fontSize: 16),
+              ),
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  Text(
+                    '1.0',
+                    style: TextStyle(fontSize: 16),
+                  ), // icon-1
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '版本介绍',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            TextField(
+              enabled: false,
+              keyboardType: TextInputType.text,
+              maxLines: 5,
+              style: TextStyle(
+                color: Color(0xFF888888),
+                fontSize: 15,
+              ),
+              controller: TextEditingController(
+                text: "温馨小述：\n"
+                "     本版本功能主要包括卡片密码管理(卡片账号,密码联想描述,密码)、隐私密码设置、个人信息设置。"
+              ),
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 10),
+              ),
+            ),
+          ]))
+        ],
+      ),
+    );
   }
-
-  
 }
