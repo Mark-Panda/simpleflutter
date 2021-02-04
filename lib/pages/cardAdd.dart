@@ -56,7 +56,7 @@ class _CardAddPageState extends State<CardAddPage> {
               style: TextStyle(color: Color(0xFF888888)),
               controller: _descController,
               decoration: InputDecoration(
-                hintText: "描述",
+                hintText: "密码联想描述信息",
                 hintStyle: TextStyle(color: Color(0xFF888888)),
                 contentPadding:
                     EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 10),
