@@ -22,3 +22,21 @@ APP暂时的基础功能包含 `启动图` `主页` `卡密管理` `个人中心
 ### 安卓打包
 参考  https://flutterchina.club/android-release/
 
+### 效果图
+
+- 启动图
+
+![启动图](./docs/images/start.png)
+
+- 主页
+
+![主页](./docs/images/home.png)
+
+- 卡片列表
+
+![卡片列表](./docs/images/card.png)
+
+- 个人中心
+
+![个人中心](./docs/images/person.png)
+
